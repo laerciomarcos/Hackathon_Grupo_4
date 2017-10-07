@@ -1,0 +1,14 @@
+application.type=widget
+application.code=digte_resultado_campanha
+application.title=digte_resultado_campanha
+application.description=digte_resultado_campanha
+application.category=SYSTEM
+application.renderer=freemarker
+developer.code=digte
+developer.name=digte
+developer.url=www.digte.com
+application.uiwidget=true
+application.mobileapp=false
+view.file=view.ftl
+edit.file=edit.ftl
+

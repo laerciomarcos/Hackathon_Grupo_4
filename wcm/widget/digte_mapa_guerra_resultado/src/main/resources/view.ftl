@@ -57,7 +57,7 @@
 							<div id="graficoAcoesComSucesso"></div>
 							<div class="row" style="margin-left: -2px;">Ações Em Clientes</div>
 							<div class="row">
-								<div class="col-md-2" style="background-color: #F7464A;">&nbsp;</div>
+								<div class="col-md-2" style="background-color: #800080;">&nbsp;</div>
 								<div class="col-md-10">Ações Com Sucesso</div>
 							</div>
 							<div class="row">
@@ -70,11 +70,11 @@
 							<div id="graficoNaoClientes"></div>
 							<div class="row">Ações Em Leads</div>
 							<div class="row">
-								<div class="col-md-2" style="background-color: #F7464A;">&nbsp;</div>
+								<div class="col-md-2" style="background-color: #0000FF;">&nbsp;</div>
 								<div class="col-md-10">Clientes Novos Sem Sucesso</div>
 							</div>
 							<div class="row">
-								<div class="col-md-2" style="background-color: #46BFBD;">&nbsp;</div>
+								<div class="col-md-2" style="background-color: #008000;">&nbsp;</div>
 								<div class="col-md-10">Clientes Novos Com Sucesso</div>
 							</div>
 						</div>

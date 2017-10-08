@@ -1,6 +1,8 @@
 var MapaGuerraResultado = SuperWidget.extend({
 	zoomClientes: null,
+	dsRepresentante: 'representante',
     dsCampanhas: 'acoesMapaVenda',
+    clientesMap: [],
 	
 	bindings: {
 		local: {
@@ -75,9 +77,13 @@ var MapaGuerraResultado = SuperWidget.extend({
         var countAcoesComSucessoClientesBase = 0;
         var countAcoesComSucessoNovosClientes = 0;
         var valorTotalVendas = 0.0;
+		var icone = '';
+		var html = '';
 
         if (dataset != undefined && dataset.values.length > 0) {
             for (var i = 0; i < dataset.values.length; i++) {
+            	icone = '';
+            	html = '';
             	countTotalRegistros++;
             	representante = dataset.values[i].nmRep;
             	if(dataset.values[i].cnaeDescricao != '') {
@@ -102,15 +108,43 @@ var MapaGuerraResultado = SuperWidget.extend({
             	}
             	if(dataset.values[i].tpCliente.toUpperCase() == 'BASE') {
             		countBase++;
+            		icone = that.getIconColor("2");
+                    html += '<div style="width: 300px;"><h4 style="margin-bottom: 8px;">'+dataset.values[i].razaoSocial+'</h4>';
+                    html +=  '<br/>'+dataset.values[i].cnpj;
+                    html +=  '<br/>'+dataset.values[i].logradouro + ' ' + dataset.values[i].numero;  
+                    html +=  '<br/>'+dataset.values[i].bairro;
+                    html +=  '<br/>'+dataset.values[i].CEP;
+                    html +=  '<br/>'+dataset.values[i].cidade+' - '+dataset.values[i].estado;
+                    html +=  '<br/><a href="tel://' + dataset.values[i].telefone + '">Ligar Telefone</a>';
+                    html +=  '<br/><a href="tel://' + dataset.values[i].celular + '">Ligar Celular</a>';
+                    html += '</div>';
             		if(dataset.values[i].resultadoAcao == '2') { //Ação Realizada Com Sucesso
             			countAcoesComSucessoClientesBase++;
             		}
             	} else {
             		countNovo++;
-            		if(dataset.values[i].resultadoAcao == '2') { //Ação Realizada Com Sucesso
+                    html += '<div style="width: 300px;"><h4 style="margin-bottom: 8px;">'+dataset.values[i].razaoSocial+'</h4>';
+                    html +=  '<br/>'+dataset.values[i].cnpj;
+                    html +=  '<br/>'+dataset.values[i].logradouro + ' ' + dataset.values[i].numero;  
+                    html +=  '<br/>'+dataset.values[i].bairro;
+                    html +=  '<br/>'+dataset.values[i].CEP;
+                    html +=  '<br/>'+dataset.values[i].cidade;
+                    html += '</div>';            		
+                    if(dataset.values[i].resultadoAcao == '2') { //Ação Realizada Com Sucesso
             			countAcoesComSucessoNovosClientes++;
+                		icone = that.getIconColor("3");
+            		} else {
+            			icone = that.getIconColor("");
             		}
             	}
+            	if(dataset.values[i].latitude != '' && dataset.values[i].longitude != '' ) {
+					that.clientesMap.push({
+						latitude: dataset.values[i].latitude,
+						longitude: dataset.values[i].longitude,
+						html: html,
+						icon: icone
+					})
+            	};
             }
         }
 
@@ -122,8 +156,8 @@ var MapaGuerraResultado = SuperWidget.extend({
         var dataAcoesComSucesso = [
             {
                 value: countAcoesComSucessoClientesBase,
-                color:"#F7464A",
-                highlight: "#FF5A5E",
+                color:"#800080",
+                highlight: "#EE82EE",
                 label: "Ações Com Sucesso"
             },
             {
@@ -140,14 +174,14 @@ var MapaGuerraResultado = SuperWidget.extend({
         var dataNaoClientes = [
             {
                 value: countNovo - countAcoesComSucessoNovosClientes,
-                color:"#F7464A",
-                highlight: "#FF5A5E",
+                color:"#0000FF",
+                highlight: "#6495ED",
                 label: "Clientes Novos Sem Sucesso"
             },
             {
                 value: countAcoesComSucessoNovosClientes,
-                color: "#46BFBD",
-                highlight: "#5AD3D1",
+                color: "#008000",
+                highlight: "#90EE90",
                 label: "Clientes Novos Com Sucesso"
             }
         ];
@@ -200,39 +234,11 @@ var MapaGuerraResultado = SuperWidget.extend({
 	vLoadMap: function(campanha) {
 		var _this = this;
 		var numeroZoom = parseInt(_this.zoomClientes);
-		
-		//_this.clientesMap = [];
-		
-		//var tipoCliente = $('#slTipoCliente', _this.sGetContext()).val();
-		
-		//var representanteMap = {};
-		
-		/*
-		if (_this.representante != null) {
-			
-			representanteMap = {
-									latitude: _this.representante.latitude,
-									longitude: _this.representante.longitude,
-									html: '<div style="width: 300px;"><h4 style="margin-bottom: 8px;">'+ _this.representante.nmRep +'</h4></div>',
-									icon: _this.getIconColor("")
-								}
-			
-			_this.clientesMap.push(representanteMap);
-			
-			
-			if (tipoCliente == "1" || tipoCliente == "3") {
-				_this.loadClientesByRepresentante();
-			}
-			
-			if (tipoCliente == "2" || tipoCliente == "3") {
-				_this.loadNaoClientes();
-			}
-		}*/
 
 	   var meuMapa = jQuery('#google-map').gMap({
 
 			maptype: 'ROADMAP',
-			//markers: _this.clientesMap,
+			markers: _this.clientesMap,
 			doubleclickzoom: true,
 			controls: {
 				panControl: true,
@@ -242,8 +248,8 @@ var MapaGuerraResultado = SuperWidget.extend({
 				streetViewControl: false,
 				overviewMapControl: false
 			},
-			//latitude: representanteMap.latitude,
-			//longitude: representanteMap.longitude,
+			latitude: _this.clientesMap[0].latitude,
+			longitude: _this.clientesMap[0].longitude,
 			zoom: numeroZoom
 		});
 	},
@@ -253,7 +259,7 @@ var MapaGuerraResultado = SuperWidget.extend({
 		var campanhaAnterior = '';
 		
 		var c1 = DatasetFactory.createConstraint('metadata#active', true, true, ConstraintType.MUST);
-		var dataset = DatasetFactory.getDataset(_this.dsCampanhas, null, [c1], ["codCampanha"]);
+		var dataset = DatasetFactory.getDataset(_this.dsCampanhas, null, [c1], ["nmCampanha"]);
 		var $optionSelecione = $("<option>", {
 			"value": "",
 			"text": "--Selecione--"
@@ -263,14 +269,14 @@ var MapaGuerraResultado = SuperWidget.extend({
 		
 		if (dataset != undefined && dataset.values.length > 0) {
 			for (var i = 0; i < dataset.values.length; i++) {
-				if(campanhaAnterior != dataset.values[i].codCampanha) {
+				if(campanhaAnterior != dataset.values[i].nmCampanha) {
 					var $option = $("<option>", {
 						"value": dataset.values[i].codCampanha,
 						"text": dataset.values[i].nmCampanha
 					});
 					
 					$('#slCampanha', _this.sGetContext()).append($option);
-					campanhaAnterior = dataset.values[i].codCampanha;
+					campanhaAnterior = dataset.values[i].nmCampanha;
 				}
 			}
 		}
@@ -280,6 +286,7 @@ var MapaGuerraResultado = SuperWidget.extend({
 		var _this = this;
 		var campanhaVal = $('#slCampanha', _this.sGetContext()).val();
 
+	    _this.clientesMap = [];
 		if (el.value != "") {
 			$('#linhaGraficos', _this.sGetContext()).css("display", "block");
 			_this.initGraph(el.value);
@@ -358,6 +365,37 @@ var MapaGuerraResultado = SuperWidget.extend({
 		 return retorno;
 	},
 
+	getIconColor: function(cliente) {
+		
+		var urlIcon = "";
+		
+		if (cliente == "") {
+			urlIcon = "http://maps.google.com/mapfiles/ms/icons/blue-dot.png";
+		} else if (cliente == "1") {
+			urlIcon = "http://maps.google.com/mapfiles/ms/icons/red-dot.png";
+		} else if (cliente == "2") {
+			urlIcon = "http://maps.google.com/mapfiles/ms/icons/purple-dot.png";
+		} else if (cliente == "3") {
+			urlIcon = "http://maps.google.com/mapfiles/ms/icons/green-dot.png";
+		}
+		
+		var icon = {
+				image: urlIcon,
+				iconsize: [26, 46],
+				iconanchor: [12,46]
+			};
+		
+		/*
+		 * http://maps.google.com/mapfiles/ms/icons/blue-dot.png
+		 * http://maps.google.com/mapfiles/ms/icons/red-dot.png
+		 * http://maps.google.com/mapfiles/ms/icons/purple-dot.png
+		 * http://maps.google.com/mapfiles/ms/icons/yellow-dot.png
+		 * http://maps.google.com/mapfiles/ms/icons/green-dot.png
+		 */
+		
+		return icon;
+	},
+		
 	/********/
 	/*SHARED*/
 	/********/

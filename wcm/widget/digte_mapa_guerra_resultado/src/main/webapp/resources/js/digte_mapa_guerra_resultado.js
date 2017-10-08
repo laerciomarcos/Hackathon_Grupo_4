@@ -3,6 +3,9 @@ var MapaGuerraResultado = SuperWidget.extend({
 	dsRepresentante: 'representante',
     dsCampanhas: 'acoesMapaVenda',
     clientesMap: [],
+    representanteLatitude: 0,
+    representanteLongitude: 0,
+    representanteRaio: 0,
 	
 	bindings: {
 		local: {
@@ -153,6 +156,9 @@ var MapaGuerraResultado = SuperWidget.extend({
 		var c11 = DatasetFactory.createConstraint('metadata#active', true, true, ConstraintType.MUST);
 		var c21 = DatasetFactory.createConstraint('codRep', codRep, codRep, ConstraintType.MUST);
 		var dataset11 = DatasetFactory.getDataset(that.dsRepresentante, null, [c11, c21], null);
+    	that.representanteLatitude = 0;
+    	that.representanteLongitude = 0;
+    	that.representanteRaio = 0;
 
 		if (dataset11 != undefined && dataset11.values.length > 0) {
 			that.clientesMap.push({
@@ -161,6 +167,9 @@ var MapaGuerraResultado = SuperWidget.extend({
 				html: '<div style="width: 300px;"><h4 style="margin-bottom: 8px;">'+ representante +'</h4></div>',
 				icon: that.getIconColor("1")
 			})
+		    that.representanteLatitude = dataset11.values[0].latitude;
+    		that.representanteLongitude = dataset11.values[0].longitude;
+    		that.representanteRaio = dataset11.values[0].raio;
 		}
 		
 		if (representante != undefined && representante != '') {
@@ -278,6 +287,21 @@ var MapaGuerraResultado = SuperWidget.extend({
 			longitude: _this.clientesMap[0].longitude,
 			zoom: numeroZoom
 		});
+
+		var cityCenterLatLng = new google.maps.LatLng(_this.representanteLatitude, _this.representanteLongitude);  
+	    var c = {  
+	       strokeColor: "#ff0000",  
+	       strokeOpacity: 0.6,
+	       strokeWeight: 1,
+	       fillColor: "#b0c4de",
+	       fillOpacity: 0.50,
+	       map: meuMapa.data('gMap.reference'),  
+	       center: cityCenterLatLng,
+	       radius: parseInt(_this.representanteRaio) * 1000,  
+	       editable:false  
+	    };
+	 
+	    var circle = new google.maps.Circle(c);
 	},
 	
 	loadCampanhas: function() {

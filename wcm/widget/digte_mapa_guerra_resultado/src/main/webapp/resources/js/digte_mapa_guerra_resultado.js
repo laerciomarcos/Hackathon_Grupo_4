@@ -1,10 +1,11 @@
 var MapaGuerraResultado = SuperWidget.extend({
 	zoomClientes: null,
-    dsCampanhas: 'acoesMapaVenda2',
+    dsCampanhas: 'acoesMapaVenda',
 	
 	bindings: {
 		local: {
-			'edit-save': ['click_saveSettings']
+			'edit-save': ['click_saveSettings'],
+			'view-changeCampanha' : ['change_selectCampanha']
 		}
 	},
 	
@@ -54,14 +55,14 @@ var MapaGuerraResultado = SuperWidget.extend({
 	/*VIEW*/
 	/******/
 	vMode: function() {
-		this.initGraph();
-		this.vLoadMap();
+		this.loadCampanhas();
 	},
 	
-    initGraph: function() {
+    initGraph: function(campanha) {
     	var that = this;
-    	var campanha = 'TESTE1';
         var arrRetornoCampanha = [];
+        var arrCnaes = [];
+        var representante = "";
         var c1 = DatasetFactory.createConstraint('codCampanha', campanha, campanha, ConstraintType.MUST);
         var c2 = DatasetFactory.createConstraint('metadata#active', true, true, ConstraintType.MUST);
         var dataset = DatasetFactory.getDataset(this.dsCampanhas, null, [c1, c2], null);
@@ -76,6 +77,12 @@ var MapaGuerraResultado = SuperWidget.extend({
         if (dataset != undefined && dataset.values.length > 0) {
             for (var i = 0; i < dataset.values.length; i++) {
             	countTotalRegistros++;
+            	representante = dataset.values[i].nmRep;
+            	if(dataset.values[i].cnaeDescricao != '') {
+	            	arrCnaes.push({
+	            		valor: dataset.values[i].cnaeDescricao,
+	            	});
+            	}
             	arrRetornoCampanha.push({
             		codCampanha: dataset.values[i].codCampanha,
                     resultadoAcao: dataset.values[i].resultadoAcao,
@@ -101,6 +108,9 @@ var MapaGuerraResultado = SuperWidget.extend({
             }
         }
 
+        $('#txtRepresentante',this.sGetContext()).text(representante);
+        $('#txtAreaAtuacao',this.sGetContext()).text($.unique(arrCnaes.valor).join());
+        
         var dataAcoesComSucesso = [
             {
                 value: countAcoesComSucessoClientesBase,
@@ -157,8 +167,8 @@ var MapaGuerraResultado = SuperWidget.extend({
         
         var graficoTotalVendas = FLUIGC.chart($('#graficoTotalVendas',this.sGetContext()), {
             id: 'gaugeVendasTotais',
-            width: '150',
-            height: '120'
+            width: '250',
+            height: '200'
         });
         var gaugeTotalVendas = graficoTotalVendas.gauge({
         	lines: 12,
@@ -179,7 +189,7 @@ var MapaGuerraResultado = SuperWidget.extend({
         gaugeTotalVendas.set(2500);
     },
 
-	vLoadMap: function() {
+	vLoadMap: function(campanha) {
 		var _this = this;
 		var numeroZoom = parseInt(_this.zoomClientes);
 		
@@ -230,6 +240,53 @@ var MapaGuerraResultado = SuperWidget.extend({
 		});
 	},
 	
+	loadCampanhas: function() {
+		var _this = this;
+		var campanhaAnterior = '';
+		
+		var c1 = DatasetFactory.createConstraint('metadata#active', true, true, ConstraintType.MUST);
+		var dataset = DatasetFactory.getDataset(_this.dsCampanhas, null, [c1], ["codCampanha"]);
+		var $optionSelecione = $("<option>", {
+			"value": "",
+			"text": "--Selecione--"
+		});
+		
+		$('#slCampanha', _this.sGetContext()).append($optionSelecione);
+		
+		if (dataset != undefined && dataset.values.length > 0) {
+			for (var i = 0; i < dataset.values.length; i++) {
+				if(campanhaAnterior != dataset.values[i].codCampanha) {
+					var $option = $("<option>", {
+						"value": dataset.values[i].codCampanha,
+						"text": dataset.values[i].nmCampanha
+					});
+					
+					$('#slCampanha', _this.sGetContext()).append($option);
+					campanhaAnterior = dataset.values[i].codCampanha;
+				}
+			}
+		}
+	},
+	
+	selectCampanha: function(el) {
+		var _this = this;
+		var campanhaVal = $('#slCampanha', _this.sGetContext()).val();
+
+		if (el.value != "") {
+			$('#linhaGraficos', _this.sGetContext()).css("display", "block");
+			_this.initGraph(el.value);
+			_this.vLoadMap(el.value);
+		} else {
+			$('#linhaGraficos', _this.sGetContext()).css("display", "none");
+			_this.limparValoresCampanha();
+		}
+	},
+	
+	limparValoresCampanha: function() {
+		$('#txtRepresentante',this.sGetContext()).text('');
+		$('#txtAreaAtuacao',this.sGetContext()).text('');
+	},
+
 	/********/
 	/*SHARED*/
 	/********/

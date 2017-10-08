@@ -16,63 +16,84 @@
 				<div class="content">
 					<div class="row">
 						<div class="col-md-10">
-							<section id="google-map" class="gmap" style="height: 456px;"></section>
-							<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDTmEWjcmSUco-dpbyiZ3oPHUHTNOORDKk"></script>
+							<div class="row">
+								<div class="col-md-12 form-group">
+									<section id="google-map" class="gmap" style="height: 456px;"></section>
+									<script type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDTmEWjcmSUco-dpbyiZ3oPHUHTNOORDKk"></script>
+								</div>
+							</div>
 						</div>
 						<div class="col-md-2">
 							<div class="row">
 								<div class="col-md-12 form-group">
-									<strong class="fs-text-capitalize" style="font-size:20px;text-transform:uppercase">Clientes</strong>
-									<div id="graficoAcoesComSucesso"></div>
-									<div class="row">Ações Em Clientes</div>
-									<div class="row">
-										<div class="col-md-2" style="background-color: #F7464A;">&nbsp;</div>
-										<div class="col-md-10">Ações Com Sucesso</div>
-									</div>
-									<div class="row">
-										<div class="col-md-2" style="background-color: #46BFBD;">&nbsp;</div>
-										<div class="col-md-10">Ações Sem Sucesso</div>
-									</div>
+									<lable for="slCampanha">Campanha</lable>
+									<select id="slCampanha" name="slCampanha" class="form-control" data-view-changeCampanha>
+									</select>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-12 form-group">
-								<strong class="fs-text-capitalize" style="font-size:20px;text-transform:uppercase">Leads</strong>
-									<div id="graficoNaoClientes"></div>
-									<div class="row">Ações Em Leads</div>
-									<div class="row">
-										<div class="col-md-2" style="background-color: #F7464A;">&nbsp;</div>
-										<div class="col-md-10">Clientes Novos Sem Sucesso</div>
-									</div>
-									<div class="row">
-										<div class="col-md-2" style="background-color: #46BFBD;">&nbsp;</div>
-										<div class="col-md-10">Clientes Novos Com Sucesso</div>
-									</div>
+									<lable for="txtRepresentante"><strong>Representante</strong></lable>
+									<div id="txtRepresentante"></div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-12 form-group">
-									<strong class="fs-text-capitalize" style="font-size:18px;text-transform:uppercase">Não Realizadas</strong>
-									<div id="graficoAcoesNaoRealizadas"></div>
-									<div class="row">Planejamento</div>
-									<div class="row">
-										<div class="col-md-2" style="background-color: #F7464A;">&nbsp;</div>
-										<div class="col-md-10">Ações Planejadas</div>
-									</div>
-									<div class="row">
-										<div class="col-md-2" style="background-color: #46BFBD;">&nbsp;</div>
-										<div class="col-md-10">Ações Não Realizadas</div>
-									</div>
+									<lable for="txtAreaAtuacao"><strong>Área de Atuação</strong></lable>
+									<div id="txtAreaAtuacao"></div>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-12 form-group">
-									<strong class="fs-text-capitalize" style="font-size:18px;text-transform:uppercase">Total Vendas</strong>
-									<div id="graficoTotalVendas"></div>
-									<div class="row">Total em Vendas</div>
-									<div class="row">R$ 500.000,00</div>
+									<lable for="txtRepresentante"><strong>Tamanho</strong></lable>
 								</div>
 							</div>
+						</div>
+					</div>
+					<div class="row" id="linhaGraficos" style="margin-bottom: 30px; display: none;">
+						<div class="col-md-3 form-group">
+							<strong class="fs-text-capitalize" style="font-size:20px;text-transform:uppercase">Clientes</strong>
+							<div id="graficoAcoesComSucesso"></div>
+							<div class="row" style="margin-left: -2px;">Ações Em Clientes</div>
+							<div class="row">
+								<div class="col-md-2" style="background-color: #F7464A;">&nbsp;</div>
+								<div class="col-md-10">Ações Com Sucesso</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2" style="background-color: #46BFBD;">&nbsp;</div>
+								<div class="col-md-10">Ações Sem Sucesso</div>
+							</div>
+						</div>
+						<div class="col-md-3 form-group">
+							<strong class="fs-text-capitalize" style="font-size:20px;text-transform:uppercase">Leads</strong>
+							<div id="graficoNaoClientes"></div>
+							<div class="row">Ações Em Leads</div>
+							<div class="row">
+								<div class="col-md-2" style="background-color: #F7464A;">&nbsp;</div>
+								<div class="col-md-10">Clientes Novos Sem Sucesso</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2" style="background-color: #46BFBD;">&nbsp;</div>
+								<div class="col-md-10">Clientes Novos Com Sucesso</div>
+							</div>
+						</div>
+						<div class="col-md-3 form-group">
+							<strong class="fs-text-capitalize" style="font-size:18px;text-transform:uppercase">Não Realizadas</strong>
+							<div id="graficoAcoesNaoRealizadas"></div>
+							<div class="row">Planejamento</div>
+							<div class="row">
+								<div class="col-md-2" style="background-color: #F7464A;">&nbsp;</div>
+								<div class="col-md-10">Ações Planejadas</div>
+							</div>
+							<div class="row">
+								<div class="col-md-2" style="background-color: #46BFBD;">&nbsp;</div>
+								<div class="col-md-10">Ações Não Realizadas</div>
+							</div>
+						</div>
+						<div class="col-md-3 form-group">
+							<strong class="fs-text-capitalize" style="font-size:18px;text-transform:uppercase">Total Vendas</strong>
+							<div id="graficoTotalVendas"></div>
+							<div class="row">Total em Vendas - R$ 500.000,00</div>
 						</div>
 					</div>
 				</div>

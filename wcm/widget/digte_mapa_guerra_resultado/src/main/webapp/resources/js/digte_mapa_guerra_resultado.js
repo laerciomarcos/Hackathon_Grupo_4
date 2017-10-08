@@ -66,6 +66,7 @@ var MapaGuerraResultado = SuperWidget.extend({
         var arrCnaes = [];
         var arrTamanho = [];
         var representante = "";
+        var codRep = "";
         var c1 = DatasetFactory.createConstraint('codCampanha', campanha, campanha, ConstraintType.MUST);
         var c2 = DatasetFactory.createConstraint('metadata#active', true, true, ConstraintType.MUST);
         var dataset = DatasetFactory.getDataset(this.dsCampanhas, null, [c1, c2], null);
@@ -86,6 +87,7 @@ var MapaGuerraResultado = SuperWidget.extend({
             	html = '';
             	countTotalRegistros++;
             	representante = dataset.values[i].nmRep;
+            	codRep = dataset.values[i].codRep;
             	if(dataset.values[i].cnaeDescricao != '') {
 	            	arrCnaes.push(dataset.values[i].cnaeDescricao);
             	}
@@ -148,10 +150,34 @@ var MapaGuerraResultado = SuperWidget.extend({
             }
         }
 
-        $('#txtRepresentante',this.sGetContext()).text(representante);
-        $('#txtAreaAtuacao',this.sGetContext()).text($.unique(arrCnaes).join());
-        $('#txtTamanhoFunc',this.sGetContext()).text($.unique(arrTamanho).join());
-        $('#txtValorTotal',this.sGetContext()).text('Total em Vendas - R$ ' + that.formatMoney(valorTotalVendas, 2, ",","."));
+		var c11 = DatasetFactory.createConstraint('metadata#active', true, true, ConstraintType.MUST);
+		var c21 = DatasetFactory.createConstraint('codRep', codRep, codRep, ConstraintType.MUST);
+		var dataset11 = DatasetFactory.getDataset(that.dsRepresentante, null, [c11, c21], null);
+
+		if (dataset11 != undefined && dataset11.values.length > 0) {
+			that.clientesMap.push({
+				latitude: dataset11.values[0].latitude,
+				longitude: dataset11.values[0].longitude,
+				html: '<div style="width: 300px;"><h4 style="margin-bottom: 8px;">'+ representante +'</h4></div>',
+				icon: that.getIconColor("1")
+			})
+		}
+		
+		if (representante != undefined && representante != '') {
+			$('#txtRepresentante',this.sGetContext()).text(representante);
+		}
+		
+        if (arrCnaes != undefined && arrCnaes.length > 0) {
+        	$('#txtAreaAtuacao',this.sGetContext()).text($.unique(arrCnaes).join());
+        }
+		
+        if (arrTamanho != undefined && arrTamanho.length > 0) {
+        	$('#txtTamanhoFunc',this.sGetContext()).text($.unique(arrTamanho).join());
+        }
+
+        if (valorTotalVendas != undefined && valorTotalVendas > 0) {
+        	$('#txtValorTotal',this.sGetContext()).text('Total em Vendas - R$ ' + that.formatMoney(valorTotalVendas, 2, ",","."));
+        }
         
         var dataAcoesComSucesso = [
             {
@@ -341,15 +367,20 @@ var MapaGuerraResultado = SuperWidget.extend({
 	},
 
 	stringToNumber: function(valor, arredondamento) {
+		if(valor != undefined && valor != '') {
 		 if (valor.indexOf(",") > -1) {
 			valor = valor.replace(/\./g, "");
 			valor = valor.replace(/\,/g, ".");
 		 }
 		 var num = parseFloat(valor);
 		 return num;
+		} else {
+			return 0;
+		}
 	},
 
 	formatMoney: function(valor, arredondamento, separadorDecimal, separadorMilhar) {
+	 if(valor != undefined && valor != '') { 
 	 valor = valor.toString();
 	 if (valor.indexOf(",") > -1) {
 		  valor = valor.replace(/\./g, "");
@@ -363,6 +394,9 @@ var MapaGuerraResultado = SuperWidget.extend({
 
 		 var retorno = (separadorDecimal ? num.replace('.', separadorDecimal) : num).replace(new RegExp(re, 'g'), '$&' + (separadorMilhar || ''));
 		 return retorno;
+	 } else {
+		 return "0,00";
+	 }
 	},
 
 	getIconColor: function(cliente) {

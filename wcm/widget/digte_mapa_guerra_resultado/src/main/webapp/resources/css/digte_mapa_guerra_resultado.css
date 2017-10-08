@@ -1,0 +1,36 @@
+.fdwt-style-guide .table-lojas > thead > tr > th,
+.fdwt-style-guide .table-lojas > thead > tr > td { cursor: auto; }
+.fdwt-style-guide .table-responsive { margin: 0!important; border: 0!important; } /* overflow: hidden!important; */
+.fdwt-style-guide .table-responsive .panel-heading { padding: 0; border: 0; overflow: hidden; }
+.fdwt-style-guide .table-lojas tbody > tr > td[data-label="Nome"] { text-transform: capitalize!important; }
+.fdwt-style-guide .table-lojas #LimparBusca{font-weight:bold;display:block;width:100%;height:100%;text-align:center}
+#google-map{height:400px;width:100%;margin-bottom:15px;}
+.gmap_marker h4{text-transform:capitalize!important}
+
+@media screen and (max-width: 992px) {
+	.fdwt-style-guide .table-lojas thead { border: none; clip: rect(0 0 0 0); height: 1px; margin: -1px; overflow: hidden; padding: 0; position: absolute; width: 1px; }
+	.fdwt-style-guide .table-lojas tbody > tr { border-bottom: 3px solid #ddd; display: block; }
+	.fdwt-style-guide .table-lojas tbody > tr > td { display: block; text-align: right; padding: 3px 6px!important; }
+	.fdwt-style-guide .table-lojas tbody > tr > td { border: 0!important; }
+	.fdwt-style-guide .table-lojas tbody > tr > td:before { content: attr(data-label); float: left; font-weight: bold; text-transform: uppercase; }
+	.fdwt-style-guide .table-lojas tbody > tr > td:last-child { border: 0; }
+}
+
+@media screen and (max-width: 767px) {
+	.fdwt-style-guide .table-lojas tbody > tr:first-child > td:first-child { margin-top: 15px!important; }
+	.fdwt-style-guide .table-lojas tbody > tr > td[data-label="Nome"] { text-align: left; padding: 5px 0 10px 0; }
+	.fdwt-style-guide .table-lojas tbody > tr > td[data-label="Nome"]:before { content: ''; clear: both; }
+}
+
+.fdwt-style-guide .content #accordionTamanho, .fdwt-style-guide .content #accordionArea {
+	margin-bottom: 0px;
+}
+
+.fdwt-style-guide .content .panel-heading {
+	background-color: #fff !important;
+}
+
+#btnIniciarCampanha {
+	width: 100%;
+}
+

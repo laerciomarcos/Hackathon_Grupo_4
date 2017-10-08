@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jboss-web>
-    <context-root>/digte_resultado_campanha</context-root>
+    <context-root>/digte_mapa_guerra_resultado</context-root>
     <disable-cross-context>false</disable-cross-context>
 </jboss-web>

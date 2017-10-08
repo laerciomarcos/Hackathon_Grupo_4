@@ -1,0 +1,26 @@
+application.type=widget
+application.code=digte_mapa_guerra_resultado
+application.title=Resultados da Campanha
+application.description=Resultados da Campanha
+application.category=Digte
+application.renderer=freemarker
+application.uiwidget=true
+application.mobileapp=true
+application.icon=icon.png
+
+locale.file.base.name=digte_mapa_guerra_resultado
+
+developer.code=digte
+developer.name=digte
+developer.url=http://www.digte.com.br
+
+view.file=view.ftl
+edit.file=edit.ftl
+
+application.resource.component.1=fluigchart
+
+application.resource.js.1=/fdwt_template/resources/js/fdwt.js
+application.resource.js.2=/resources/js/digte_mapa_guerra_resultado.js
+application.resource.js.4=/resources/js/jquery.gmap.js
+application.resource.css.5=/resources/css/digte_mapa_guerra_resultado.css
+application.resource.css.6=/fdwt_template/resources/css/fdwt_template.css

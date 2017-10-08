@@ -45,7 +45,8 @@
 							</div>
 							<div class="row">
 								<div class="col-md-12 form-group">
-									<lable for="txtRepresentante"><strong>Tamanho</strong></lable>
+									<lable for="txtTamanhoFunc"><strong>Tamanho</strong></lable>
+									<div id="txtTamanhoFunc"></div>
 								</div>
 							</div>
 						</div>
@@ -93,7 +94,7 @@
 						<div class="col-md-3 form-group">
 							<strong class="fs-text-capitalize" style="font-size:18px;text-transform:uppercase">Total Vendas</strong>
 							<div id="graficoTotalVendas"></div>
-							<div class="row">Total em Vendas - R$ 500.000,00</div>
+							<div id="txtValorTotal" class="row"></div>
 						</div>
 					</div>
 				</div>
